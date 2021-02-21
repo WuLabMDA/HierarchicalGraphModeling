@@ -14,7 +14,7 @@ for ss = 1:length(subtypes)
     cur_fea_dir = fullfile(fea_root, diag);
     img_list = dir(fullfile(cur_img_dir, '*.png'));
     for ii = 1:length(img_list)
-            1q  adisp([num2str(ii), '/', num2str(length(img_list))]);
+        disp([num2str(ii), '/', num2str(length(img_list))]);
         cur_img_path = fullfile(cur_img_dir, img_list(ii).name);
         I = imread(cur_img_path);
         [~, basename, ~] = fileparts(img_list(ii).name);
