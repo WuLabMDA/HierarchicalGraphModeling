@@ -1,2 +1,6 @@
-# Folder
+# Folders
 data/
+bk/
+
+# Files
+*.asv
