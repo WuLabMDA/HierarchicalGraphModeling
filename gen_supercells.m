@@ -5,18 +5,18 @@ load(fea_path);
 feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','IntegratedIntensity',...
     'MinorAxisLength','MeanOutsideBoundaryIntensity','NormalizedBoundarySaliency',...
     'NormalizedOutsideBoundaryIntensity','MeanInsideBoundaryIntensity'};
-img_feas = zeros(length(feature_names), length(properties));
+img_cell_feas = zeros(length(feature_names), length(properties));
 for ff=1:length(feature_names)
-    img_feas(ff,:) = [properties.(feature_names{ff})];
+    img_cell_feas(ff,:) = [properties.(feature_names{ff})];
 end
-img_feas = img_feas';
+img_cell_feas = img_cell_feas';
 
 % load cell classifier paramters
 cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
 load(cell_clf_para_path);
 
 % normalize data
-norm_fea = bsxfun(@minus, img_feas, fea_mu);
+norm_fea = bsxfun(@minus, img_cell_feas, fea_mu);
 norm_fea = bsxfun(@rdivide, norm_fea, fea_sd);
 % label prediction
 labels = predict(cell_clf_model, norm_fea);
