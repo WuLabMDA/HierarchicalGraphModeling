@@ -1,10 +1,10 @@
 # Ceullar Spatial Pattern Mining
 Cellular Spatial Pattern Mining via Unsupervised Clustering and Graph Modeling
 
-## Step 1:
-* extract_img_cell_feas.m
+## Step 1: Cell Feature Extraction
+1. extract_img_cell_feas.m
 - Image stain normalization
-- Image cell segmentation
+- Cell segmentation
 - Cell feature extraction
-* overlay_cell2img.m
-- Overlay the segmented cell to the image
+2. overlay_cell2img.m
+- Overlay the segmented cell on the image
