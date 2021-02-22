@@ -1,6 +1,8 @@
 clearvars;
 
-fea_path = fullfile('./data', 'ImgCellFeas', 'RT', '7.mat');
+% fea_path = fullfile('./data', 'ImgCellFeas', 'CLL', '137.mat');
+% fea_path = fullfile('./data', 'ImgCellFeas', 'aCLL', '52.mat');
+fea_path = fullfile('./data', 'ImgCellFeas', 'RT', '14.mat');
 load(fea_path);
 feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','IntegratedIntensity',...
     'MinorAxisLength','MeanOutsideBoundaryIntensity','NormalizedBoundarySaliency',...
