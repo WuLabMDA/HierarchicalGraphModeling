@@ -4,7 +4,7 @@ fea_root = './data/ImgCellFeas';
 chosen_num = 3000;
 
 % feature fusing
-fea_path = fullfile(fea_root, 'CLL.mat');
+fea_path = fullfile(fea_root, 'RT.mat');
 load(fea_path);
 
 num_img = length(img_feas);
