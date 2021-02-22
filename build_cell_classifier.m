@@ -45,12 +45,10 @@ clear img_feas all_rt_feas chose_rt_idx;
 % combine data
 combine_data = cat(1, chose_cll_feas, chose_acll_feas, chose_rt_feas);
 %t-sne
-%spectral-clustering to obtain labels;
-
 t_feas = tsne(combine_data, 'Perplexity', 50, 'Standardize', true);
+%spectral-clustering to obtain labels;
 [labels, ~, ~] = spectralcluster(t_feas, 2);
 % gscatter(t_feas(:, 1), t_feas(:, 2), labels, 'rg', '', [15, 15]);
-
 
 id1_set = find(labels == 1);
 id2_set = find(labels == 2);
