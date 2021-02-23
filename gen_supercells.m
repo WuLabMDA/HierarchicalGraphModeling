@@ -1,8 +1,13 @@
 clearvars;
 
-% fea_path = fullfile('./data', 'ImgCellFeas', 'CLL', '137.mat');
-% fea_path = fullfile('./data', 'ImgCellFeas', 'aCLL', '52.mat');
-fea_path = fullfile('./data', 'ImgCellFeas', 'RT', '14.mat');
+% test_type = 'CLL';
+% test_name = '137';
+% test_type = 'aCLL';
+% test_name = '52';
+test_type = 'RT';
+test_name = '14';
+
+fea_path = fullfile('./data', 'ImgCellFeas', test_type, strcat(test_name, '.mat'));
 load(fea_path);
 feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','IntegratedIntensity',...
     'MinorAxisLength','MeanOutsideBoundaryIntensity','NormalizedBoundarySaliency',...
@@ -35,7 +40,7 @@ data_pts(:,3) = labels;
 
 % show the nuclei clouds
 imshow(I);
-hold on
+hold on;
 % calualte the cluster centers
 cell_coors = data_pts(:,1:2)';
 cluster_coors = zeros(2, length(cluster_centers));
@@ -43,7 +48,7 @@ for i=1:size(cluster_coors, 2)
     cluster_coors(:,i) = mean(cell_coors(:, idx==i), 2);
 end
 
-cmap=colormap('hsv');
+cmap=[0 1 0; 1 0 0; 0 0 1;1 1 0; 1 0 1; 0 1 1; 1 1 1];
 num_cells = size(cell_coors, 2);
 for k = 1 : num_cells
     % draw all the cells
@@ -53,4 +58,8 @@ for k = 1 : num_cells
     plot([cluster_coors(1,idx(k)), cell_coors(1,k)], [cluster_coors(2,idx(k)), cell_coors(2,k)], ...
         'Color', cmap(mod(idx(k), size(cmap,1))+1,:), 'LineWidth',3); 
 end
-hold off
+hold off;
+
+fig_save_path = fullfile('./data', 'Demos', 'SuperCells', strcat(test_type, test_name, '.png'));
+saveas(gcf, fig_save_path);
+close all;
