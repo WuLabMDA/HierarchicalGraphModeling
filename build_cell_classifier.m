@@ -58,9 +58,9 @@ select_idx = cat(2, id1_set_idx, id2_set_idx);
 select_combine_data = combine_data(select_idx, :);
 select_labels = labels(select_idx, :);
 
-[norm_data, fea_mu, fea_sd] = zscore(select_combine_data); 
+[norm_data, cell_fea_mu, cell_fea_sd] = zscore(select_combine_data); 
 % Build classification model
 cell_clf_model = fitcensemble(norm_data, select_labels, 'Method', 'Bag');
 % Save the cell 
 cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
-save(cell_clf_para_path, 'cell_clf_model', 'fea_mu', 'fea_sd');
+save(cell_clf_para_path, 'cell_clf_model', 'cell_fea_mu', 'cell_fea_sd');
