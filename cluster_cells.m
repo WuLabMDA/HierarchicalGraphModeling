@@ -1,5 +1,5 @@
 clearvars;
-rng(123)
+rng(123);
 fea_root = './data/ImgCellFeas';
 chosen_num = 3000;
 
@@ -17,7 +17,7 @@ chosen_idx = randperm(size(all_feas, 1), chosen_num);
 chosen_feas = all_feas(chosen_idx, :);
 
 % perform t-sne
-t_feas = tsne(chosen_feas, 'Perplexity', 50, 'Standardize', true);
+t_feas = tsne(chosen_feas, 'Perplexity', 30, 'Standardize', true);
 scatter(t_feas(:, 1), t_feas(:, 2), 'filled');
 title('2D t-SNE Embedding');
 
