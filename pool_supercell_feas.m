@@ -29,8 +29,8 @@ for ss = 1:length(subtypes)
         end
         img_cell_feas = img_cell_feas';        
         % normalize data
-        norm_fea = bsxfun(@minus, img_cell_feas, fea_mu);
-        norm_fea = bsxfun(@rdivide, norm_fea, fea_sd);
+        norm_fea = bsxfun(@minus, img_cell_feas, cell_fea_mu);
+        norm_fea = bsxfun(@rdivide, norm_fea, cell_fea_sd);
         % label prediction
         labels = predict(cell_clf_model, norm_fea);
         % create cell features for graph construction
@@ -42,7 +42,7 @@ for ss = 1:length(subtypes)
         % graph construction
         [cluster_centers,idx,cluster2data]= ROC(data_pts, 0.9, 10);        
         % extract supercell features 
-        super_cell_feas = zeros(length(cluster2data), 22);
+        super_cell_feas = zeros(length(cluster2data), 24);
         actual_ind = 1;
         for cc=1:length(cluster2data)
             % mean of indivisual cel
@@ -58,6 +58,12 @@ for ss = 1:length(subtypes)
             v_feas = compute_voronoi_feas(cell_xs, cell_ys);
             super_cell_feas(actual_ind, 11:22) = v_feas;
             % supercell features
+            super_cell_feas(actual_ind, 23) = length(cluster_idx);
+            cluster_center = cluster_centers(cc, 1:2);
+            cell_coors = data_pts(cluster_idx, 1:2);
+            cell_center_vec = cluster_center - cell_coors;
+            avg_cell_center_len = mean(vecnorm(cell_center_vec, 2, 2));
+            super_cell_feas(actual_ind, 24) = avg_cell_center_len;
             % TO-ADD
             actual_ind = actual_ind + 1;
         end
