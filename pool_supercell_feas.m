@@ -21,7 +21,7 @@ for ss = 1:length(subtypes)
         disp([num2str(ii), '/', num2str(length(img_list))]);
         [~, basename, ~] = fileparts(img_list(ii).name);
         cur_fea_path = fullfile(cur_diag_dir, img_list(ii).name);
-        load(cur_fea_path, 'properties');
+        load(cur_fea_path, 'properties', 'I');
         % obtain all cells' features 
         img_cell_feas = zeros(length(feature_names), length(properties));
         for ff=1:length(feature_names)
@@ -42,7 +42,8 @@ for ss = 1:length(subtypes)
         % graph construction
         [cluster_centers,idx,cluster2data]= ROC(data_pts, 0.9, 10);        
         % extract supercell features 
-        super_cell_feas = zeros(length(cluster2data), 24);
+        super_cell_feas = zeros(length(cluster2data), 32);
+        polygons = cell(length(cluster2data), 1);
         actual_ind = 1;
         for cc=1:length(cluster2data)
             % mean of indivisual cel
@@ -58,13 +59,11 @@ for ss = 1:length(subtypes)
             v_feas = compute_voronoi_feas(cell_xs, cell_ys);
             super_cell_feas(actual_ind, 11:22) = v_feas;
             % supercell features
-            super_cell_feas(actual_ind, 23) = length(cluster_idx);
-            cluster_center = cluster_centers(cc, 1:2);
-            cell_coors = data_pts(cluster_idx, 1:2);
-            cell_center_vec = cluster_center - cell_coors;
-            avg_cell_center_len = mean(vecnorm(cell_center_vec, 2, 2));
-            super_cell_feas(actual_ind, 24) = avg_cell_center_len;
-            % TO-ADD
+            polygon_supercell = convhull(cell_xs, cell_ys);
+            polygon_mask = poly2mask(cell_xs(polygon_supercell), cell_ys(polygon_supercell), size(I,1), size(I,2));
+            supercell_fea =regionprops('table',polygon_mask,im2gray(I),'Area','Perimeter','Circularity','Eccentricity','EquivDiameter',...
+                'MajorAxisLength','MinorAxisLength','Orientation','Solidity','MeanIntensity');
+            super_cell_feas(actual_ind, 23:32) = table2array(supercell_fea);
             actual_ind = actual_ind + 1;
         end
         super_cell_feas = super_cell_feas(1:actual_ind-1, :);
