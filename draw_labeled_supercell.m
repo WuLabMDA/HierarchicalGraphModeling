@@ -44,16 +44,17 @@ load(supercell_clf_para_path);
 
 
 % visulize labeled supercell
-imshow(I);
-hold on;
+
 % calualte the cluster centers
 cell_coors = data_pts(:,1:2)';
 cluster_coors = zeros(2, length(cluster_centers));
 for i=1:size(cluster_coors, 2)
     cluster_coors(:,i) = mean(cell_coors(:, idx==i), 2);
 end
-cmap=[0 1 0; 1 0 0; 0 0 1;1 1 0; 1 0 1; 0 1 1; 1 1 1];
 
+imshow(I);
+hold on;
+cmap=[0 1 0; 1 0 0; 0 0 1;1 1 0; 1 0 1; 0 1 1; 1 1 1];
 % extract supercell features 
 for cc=1:length(cluster2data)
     % mean of indivisual cel
@@ -61,7 +62,7 @@ for cc=1:length(cluster2data)
     if length(cluster_idx) < 5
         continue;
     end
-    super_cell_feas = zeros(1, 24);
+    super_cell_feas = zeros(1, size(supercell_fea_mu, 2));
     
     cell_feas = mean(img_cell_feas(cluster_idx, :), 1);
     super_cell_feas(1, 1:10) = cell_feas;
