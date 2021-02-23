@@ -28,12 +28,12 @@ for ii=1:num_rt_imgs
 end
 rt_feas = cell2mat(rt_feas);
 % merge CLL/aCLL/RT supercell featuers
-all_feas = cat(1, cll_feas, acll_feas, rt_feas);
+all_supercell_feas = cat(1, cll_feas, acll_feas, rt_feas);
 
 % perform t-sne
-t_feas = tsne(all_feas, 'Perplexity', 100, 'Standardize', true);
-scatter(t_feas(:, 1), t_feas(:, 2), 'filled');
-title('2D t-SNE Embedding');
+t_feas = tsne(all_supercell_feas, 'Perplexity', 100, 'Standardize', true);
+% scatter(t_feas(:, 1), t_feas(:, 2), 'filled');
+% title('2D t-SNE Embedding');
 
 % perform spectral clustering
 [ids, ~, ~] = spectralcluster(t_feas, 2);
