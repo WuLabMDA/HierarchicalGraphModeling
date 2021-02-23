@@ -18,8 +18,8 @@ cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
 load(cell_clf_para_path);
 
 % normalize data
-norm_fea = bsxfun(@minus, img_cell_feas, fea_mu);
-norm_fea = bsxfun(@rdivide, norm_fea, fea_sd);
+norm_fea = bsxfun(@minus, img_cell_feas, cell_fea_mu);
+norm_fea = bsxfun(@rdivide, norm_fea, cell_fea_sd);
 % label prediction
 labels = predict(cell_clf_model, norm_fea);
 
