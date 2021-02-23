@@ -31,7 +31,7 @@ rt_feas = cell2mat(rt_feas);
 all_feas = cat(1, cll_feas, acll_feas, rt_feas);
 
 % perform t-sne
-t_feas = tsne(all_feas, 'Perplexity', 30, 'Standardize', true);
+t_feas = tsne(all_feas, 'Perplexity', 100, 'Standardize', true);
 scatter(t_feas(:, 1), t_feas(:, 2), 'filled');
 title('2D t-SNE Embedding');
 
