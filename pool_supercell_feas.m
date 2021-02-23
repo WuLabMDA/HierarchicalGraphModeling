@@ -18,6 +18,7 @@ for ss = 1:length(subtypes)
     cur_diag_dir = fullfile(fea_root, diag);
     img_list = dir(fullfile(cur_diag_dir, '*.mat'));
     for ii = 1:length(img_list)
+        disp([num2str(ii), '/', num2str(length(img_list))]);
         [~, basename, ~] = fileparts(img_list(ii).name);
         cur_fea_path = fullfile(cur_diag_dir, img_list(ii).name);
         load(cur_fea_path, 'properties');
@@ -41,14 +42,32 @@ for ss = 1:length(subtypes)
         % graph construction
         [cluster_centers,idx,cluster2data]= ROC(data_pts, 0.9, 10);        
         % extract supercell features 
-        super_cell_feas = zeros(32, 10);
-        % TODO
+        super_cell_feas = zeros(length(cluster2data), 22);
+        actual_ind = 1;
+        for cc=1:length(cluster2data)
+            % mean of indivisual cel
+            cluster_idx = cluster2data{cc};
+            if length(cluster_idx) < 5
+                continue;
+            end
+            cell_feas = mean(img_cell_feas(cluster_idx, :), 1);
+            super_cell_feas(actual_ind, 1:10) = cell_feas;
+            % supercell voronoi features 
+            cell_xs = data_pts(cluster_idx, 1)';
+            cell_ys = data_pts(cluster_idx, 2)';
+            v_feas = compute_voronoi_feas(cell_xs, cell_ys);
+            super_cell_feas(actual_ind, 11:22) = v_feas;
+            % supercell features
+            % TO-ADD
+            actual_ind = actual_ind + 1;
+        end
+        super_cell_feas = super_cell_feas(1:actual_ind-1, :);
         % save supercell features
         img_supercell_feas(ii).name = basename;
         img_supercell_feas(ii).supercell_feas = super_cell_feas;        
     end
-    population_supercell_feas.diagnosis = diag;
-    population_supercell_feas.img_feas = img_supercell_feas;
+    population_supercell_feas(ss).diagnosis = diag;
+    population_supercell_feas(ss).img_feas = img_supercell_feas;
 end
 population_supercell_fea_path = fullfile('./data', 'ImgCellFeas', 'population_supercell.mat');
 save(population_supercell_fea_path, 'population_supercell_feas');
