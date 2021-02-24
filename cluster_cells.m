@@ -24,3 +24,6 @@ title('2D t-SNE Embedding');
 % perform spectral clustering to have 2 cluster
 [ids, ~, ~] = spectralcluster(t_feas, 2);
 gscatter(t_feas(:, 1), t_feas(:, 2), ids, 'rg', '', [15, 15]);
+fig_save_path = fullfile('./data', 'Demos', 'Cluster', 'cell_cluster.png');
+imwrite(getframe(gca).cdata, fig_save_path);
+close all;
