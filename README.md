@@ -38,3 +38,6 @@ coordinates, and then extract edge and node information
 format compatible to benchmark graph classification dataset like PROTEINS.zip used
 at https://github.com/cszhangzhen/HGP-SL. 
 
+## Step 5: Perform Graph Classification
+- Try https://github.com/cszhangzhen/HGP-SL
+
