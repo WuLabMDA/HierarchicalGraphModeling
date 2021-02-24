@@ -35,9 +35,9 @@ Cellular Spatial Pattern Mining via Unsupervised Clustering and Graph Modeling
 coordinates, and then extract edge and node information
 2. gen_graph_cls_data.m
 - Based on the extracted edge and node information, generate the dataset with
-format compatible to benchmark graph classification dataset like PROTEINS.zip used
-at https://github.com/cszhangzhen/HGP-SL. 
+format compatible to benchmark graph classification dataset like 
+PROTEINS/ENZYMES/MUTAG used at https://github.com/cszhangzhen/HGP-SL. 
 
 ## Step 5: Perform Graph Classification
-- Try https://github.com/cszhangzhen/HGP-SL
+- Try https://github.com/cszhangzhen/HGP-SL and https://github.com/BorgwardtLab/WWL
 
