@@ -1,11 +1,11 @@
 clearvars;
 
-% test_type = 'CLL';
-% test_name = '137';
+test_type = 'CLL';
+test_name = '137';
 % test_type = 'aCLL';
-% test_name = '52';
-test_type = 'RT';
-test_name = '14';
+% test_name = '205';
+% test_type = 'RT';
+% test_name = '14';
 
 fea_path = fullfile('./data', 'ImgCellFeas', test_type, strcat(test_name, '.mat'));
 load(fea_path);
@@ -61,5 +61,5 @@ end
 hold off;
 
 fig_save_path = fullfile('./data', 'Demos', 'SuperCells', strcat(test_type, test_name, '.png'));
-saveas(gcf, fig_save_path);
+imwrite(getframe(gca).cdata, fig_save_path);
 close all;
