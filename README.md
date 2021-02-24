@@ -28,3 +28,13 @@ Cellular Spatial Pattern Mining via Unsupervised Clustering and Graph Modeling
 - Construct supercell classifer based on pseudo supercell types
 5. draw_labeled_supercell.m
 - Label each supercell and overlay on the image
+
+## Step 4: Global Graph Construction
+1. extract_global_graph_info.m
+- Build delaunay graph for each image based on all supercells' center 
+coordinates, and then extract edge and node information
+2. gen_graph_cls_data.m
+- Based on the extracted edge and node information, generate the dataset with
+format compatible to benchmark graph classification dataset like PROTEINS.zip used
+at https://github.com/cszhangzhen/HGP-SL. 
+
