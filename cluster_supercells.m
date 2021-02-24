@@ -38,3 +38,6 @@ t_feas = tsne(all_supercell_feas, 'Perplexity', 100, 'Standardize', true);
 % perform spectral clustering
 [ids, ~, ~] = spectralcluster(t_feas, 2);
 gscatter(t_feas(:, 1), t_feas(:, 2), ids, 'rgb', '', [15, 15]);
+fig_save_path = fullfile('./data', 'Demos', 'Cluster', 'supercell_cluster.png');
+imwrite(getframe(gca).cdata, fig_save_path);
+close all;
