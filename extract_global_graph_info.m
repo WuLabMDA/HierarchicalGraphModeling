@@ -6,6 +6,7 @@ feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','Integrate
     'NormalizedOutsideBoundaryIntensity','MeanInsideBoundaryIntensity'};
         
 subtypes = {'CLL', 'aCLL', 'RT'};
+cmap=[1 0 0; 0 1 0; 0 0 1];
 for ss = 1:length(subtypes)
     diag = subtypes{ss};
     disp(['Global Graph for ', diag]);
@@ -102,6 +103,20 @@ for ss = 1:length(subtypes)
         nodes = graph_nodes(:, 3);
         cur_graph_info_path = fullfile('./data', 'GlobalGraph', diag, img_list(ii).name);
         save(cur_graph_info_path, 'edges', 'nodes');
+        imshow(I);
+        hold on;
+        for ee=1:length(edges)
+            pa = edges(ee, 1);
+            pb = edges(ee, 2);
+            edge_sum = nodes(pa) + nodes(pb);
+            plot([cluster_centers(pa,1), cluster_centers(pb,1)], [cluster_centers(pa,2), cluster_centers(pb,2)], ...
+                'Color', cmap(edge_sum-1,:), 'LineWidth',3); 
+        end
+        hold off;
+        [~, basename, ~] = fileparts(img_list(ii).name);
+        cur_supercell_edge_path = fullfile('./data', 'GlobalGraph', diag, strcat(basename, '.png'));
+        imwrite(getframe(gca).cdata, cur_supercell_edge_path);
+        close all;
     end
 end
 
