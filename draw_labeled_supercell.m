@@ -7,7 +7,7 @@ clearvars;
 test_type = 'RT';
 test_name = '14';
 
-fea_path = fullfile('./data', 'ImgCellFeas', test_type, strcat(test_name, '.mat'));
+fea_path = fullfile('./data', 'All', 'ImgCellFeas', test_type, strcat(test_name, '.mat'));
 load(fea_path);
 feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','IntegratedIntensity',...
     'MinorAxisLength','MeanOutsideBoundaryIntensity','NormalizedBoundarySaliency',...
@@ -19,7 +19,7 @@ end
 img_cell_feas = img_cell_feas';
 
 % load cell classifier paramters
-cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
+cell_clf_para_path = fullfile('./data', 'All', 'Models', 'cell_clf_para.mat');
 load(cell_clf_para_path);
 
 % normalize data
@@ -39,12 +39,11 @@ data_pts(:,3) = labels;
 [cluster_centers,idx,cluster2data]= ROC(data_pts, 0.9, 10);
 
 % Save the supercell classifier 
-supercell_clf_para_path = fullfile('./data', 'Models', 'supercell_clf_para.mat');
+supercell_clf_para_path = fullfile('./data', 'All', 'Models', 'supercell_clf_para.mat');
 load(supercell_clf_para_path);
 
 
 % visulize labeled supercell
-
 % calualte the cluster centers
 cell_coors = data_pts(:,1:2)';
 cluster_coors = zeros(2, length(cluster_centers));
@@ -72,12 +71,11 @@ for cc=1:length(cluster2data)
     v_feas = compute_voronoi_feas(cell_xs, cell_ys);
     super_cell_feas(1, 11:22) = v_feas;
     % supercell features
-    super_cell_feas(1, 23) = length(cluster_idx);
-    cluster_center = cluster_centers(cc, 1:2);
-    cell_coors = data_pts(cluster_idx, 1:2);
-    cell_center_vec = cluster_center - cell_coors;
-    avg_cell_center_len = mean(vecnorm(cell_center_vec, 2, 2));
-    super_cell_feas(1, 24) = avg_cell_center_len;
+    polygon_supercell = convhull(cell_xs, cell_ys);
+    polygon_mask = poly2mask(cell_xs(polygon_supercell), cell_ys(polygon_supercell), size(I,1), size(I,2));
+    supercell_fea =regionprops('table',polygon_mask,im2gray(I),'Area','Perimeter','Circularity','Eccentricity','EquivDiameter',...
+        'MajorAxisLength','MinorAxisLength','Orientation','Solidity','MeanIntensity');
+    super_cell_feas(1, 23:32) = table2array(supercell_fea);    
     
     % normalize data
     norm_fea = bsxfun(@minus, super_cell_feas, supercell_fea_mu);
@@ -99,6 +97,6 @@ for cc=1:length(cluster2data)
 end
 hold off;
 
-fig_save_path = fullfile('./data', 'Demos', 'LabeledSuperCells', strcat(test_type, test_name, '.png'));
+fig_save_path = fullfile('./data', 'All', 'Demos', 'LabeledSuperCells', strcat(test_type, test_name, '.png'));
 imwrite(getframe(gca).cdata, fig_save_path);
 close all;

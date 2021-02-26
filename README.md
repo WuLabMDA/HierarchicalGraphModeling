@@ -6,7 +6,7 @@ Cellular Spatial Pattern Mining via Unsupervised Clustering and Graph Modeling
 - Image stain normalization
 - Cell segmentation
 - Cell feature extraction
-2. overlay_cell2img.m
+2. draw_cell_seg.m
 - Overlay the segmented cell on the image
 3. select_cell_feas.m
 - Select 10 from 24 extracted features

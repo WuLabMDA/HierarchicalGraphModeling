@@ -1,5 +1,5 @@
 clearvars;
-fea_root = fullfile('./data', 'ImgCellFeas');
+fea_root = fullfile('./data', 'All', 'ImgCellFeas');
 
 subtypes = {'CLL', 'aCLL', 'RT'};
 feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','IntegratedIntensity',...

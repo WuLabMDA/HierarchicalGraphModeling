@@ -1,6 +1,6 @@
 clearvars;
 rng(123)
-fea_root = './data/ImgCellFeas';
+fea_root = './data/All/ImgCellFeas';
 chose_num = 3000;
 
 % Fusing features from CLL/aCLL/RT
@@ -45,15 +45,15 @@ clear img_feas all_rt_feas chose_rt_idx;
 % combine data
 combine_data = cat(1, chose_cll_feas, chose_acll_feas, chose_rt_feas);
 %t-sne
-t_feas = tsne(combine_data, 'Perplexity', 50, 'Standardize', true);
+t_feas = tsne(combine_data, 'Perplexity', 100, 'Standardize', true);
 %spectral-clustering to obtain labels;
 [labels, ~, ~] = spectralcluster(t_feas, 2);
 % gscatter(t_feas(:, 1), t_feas(:, 2), labels, 'rg', '', [15, 15]);
 
 id1_set = find(labels == 1);
 id2_set = find(labels == 2);
-id1_set_idx = randperm(size(id1_set, 1), 2100);
-id2_set_idx = randperm(size(id2_set, 1), 900);
+id1_set_idx = randperm(size(id1_set, 1), 1400);
+id2_set_idx = randperm(size(id2_set, 1), 600);
 select_idx = cat(2, id1_set_idx, id2_set_idx);
 select_combine_data = combine_data(select_idx, :);
 select_labels = labels(select_idx, :);
@@ -62,5 +62,5 @@ select_labels = labels(select_idx, :);
 % Build classification model
 cell_clf_model = fitcensemble(norm_data, select_labels, 'Method', 'Bag');
 % Save the cell 
-cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
+cell_clf_para_path = fullfile('./data', 'All', 'Models', 'cell_clf_para.mat');
 save(cell_clf_para_path, 'cell_clf_model', 'cell_fea_mu', 'cell_fea_sd');

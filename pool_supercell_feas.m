@@ -1,12 +1,12 @@
 clearvars;
-fea_root = fullfile('./data', 'ImgCellFeas');
+fea_root = fullfile('./data', 'All', 'ImgCellFeas');
 
 feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','IntegratedIntensity',...
     'MinorAxisLength','MeanOutsideBoundaryIntensity','NormalizedBoundarySaliency',...
     'NormalizedOutsideBoundaryIntensity','MeanInsideBoundaryIntensity'};
 
 % load cell classifier paramters
-cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
+cell_clf_para_path = fullfile('./data', 'All', 'Models', 'cell_clf_para.mat');
 load(cell_clf_para_path);
 
 population_supercell_feas = struct('diagnosis', 'img_feas');
@@ -74,6 +74,6 @@ for ss = 1:length(subtypes)
     population_supercell_feas(ss).diagnosis = diag;
     population_supercell_feas(ss).img_feas = img_supercell_feas;
 end
-population_supercell_fea_path = fullfile('./data', 'ImgCellFeas', 'population_supercell.mat');
+population_supercell_fea_path = fullfile('./data', 'All', 'ImgCellFeas', 'population_supercell.mat');
 save(population_supercell_fea_path, 'population_supercell_feas');
     

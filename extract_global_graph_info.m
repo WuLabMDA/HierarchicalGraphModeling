@@ -1,5 +1,5 @@
 clearvars;
-fea_root = fullfile('./data', 'ImgCellFeas');
+fea_root = fullfile('./data', 'All', 'ImgCellFeas');
 
 feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','IntegratedIntensity',...
     'MinorAxisLength','MeanOutsideBoundaryIntensity','NormalizedBoundarySaliency',...
@@ -23,7 +23,7 @@ for ss = 1:length(subtypes)
         img_cell_feas = img_cell_feas';
 
         % load cell classifier paramters
-        cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
+        cell_clf_para_path = fullfile('./data', 'All', 'Models', 'cell_clf_para.mat');
         load(cell_clf_para_path);
 
         % normalize data
@@ -43,7 +43,7 @@ for ss = 1:length(subtypes)
         [cluster_centers,idx,cluster2data]= ROC(data_pts, 0.9, 10);
 
         % Save the supercell classifier 
-        supercell_clf_para_path = fullfile('./data', 'Models', 'supercell_clf_para.mat');
+        supercell_clf_para_path = fullfile('./data', 'All', 'Models', 'supercell_clf_para.mat');
         load(supercell_clf_para_path);
         % calualte the cluster centers
         cell_coors = data_pts(:,1:2)';
@@ -101,9 +101,12 @@ for ss = 1:length(subtypes)
         end
         edges = unique(edges, 'rows');
         nodes = graph_nodes(:, 3);
-        cur_graph_info_path = fullfile('./data', 'GlobalGraph', diag, img_list(ii).name);
+        cur_graph_info_path = fullfile('./data', 'All', 'GlobalGraph', diag, img_list(ii).name);
         save(cur_graph_info_path, 'edges', 'nodes');
-        imshow(I);
+        
+        
+        I_empty = zeros(1000, 1000);
+        imshow(I_empty);
         hold on;
         for ee=1:length(edges)
             pa = edges(ee, 1);
@@ -114,7 +117,7 @@ for ss = 1:length(subtypes)
         end
         hold off;
         [~, basename, ~] = fileparts(img_list(ii).name);
-        cur_supercell_edge_path = fullfile('./data', 'GlobalGraph', diag, strcat(basename, '.png'));
+        cur_supercell_edge_path = fullfile('./data', 'All', 'GlobalGraph', diag, strcat(basename, '.png'));
         imwrite(getframe(gca).cdata, cur_supercell_edge_path);
         close all;
     end

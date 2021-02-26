@@ -1,7 +1,7 @@
 clearvars;
 rng(123);
 
-img_edge_fea_path = fullfile('./data', 'GlobalGraph', 'edge_connection_fea.mat');
+img_edge_fea_path = fullfile('./data', 'All', 'GlobalGraph', 'edge_connection_fea.mat');
 load(img_edge_fea_path, 'population_img_feas');
 
 
@@ -10,7 +10,7 @@ for ff=1:length(cll_feas)
     cll_feas(ff, :) = population_img_feas(1).img_feas(ff).edge_feas;
 end
 cll_labels = ones(length(cll_feas), 1);
-cll_cv = cvpartition(size(cll_feas,1),'HoldOut',0.2);
+cll_cv = cvpartition(size(cll_feas,1),'HoldOut', 0.2);
 idx = cll_cv.test;
 cll_train_feas = cll_feas(~idx, :);
 cll_train_labels = cll_labels(~idx, :);
@@ -22,7 +22,7 @@ for ff=1:length(acll_feas)
     acll_feas(ff, :) = population_img_feas(2).img_feas(ff).edge_feas;
 end
 acll_labels = ones(size(acll_feas, 1), 1) * 2;
-acll_cv = cvpartition(size(acll_feas,1),'HoldOut',0.2);
+acll_cv = cvpartition(size(acll_feas,1),'HoldOut', 0.2);
 idx = acll_cv.test;
 acll_train_feas = acll_feas(~idx, :);
 acll_train_labels = acll_labels(~idx, :);
@@ -34,13 +34,17 @@ for ff=1:length(rt_feas)
     rt_feas(ff, :) = population_img_feas(3).img_feas(ff).edge_feas;
 end
 rt_labels = ones(size(rt_feas, 1), 1) * 3;
-rt_cv = cvpartition(size(rt_feas,1),'HoldOut',0.2);
+rt_cv = cvpartition(size(rt_feas,1),'HoldOut', 0.2);
 idx = rt_cv.test;
 rt_train_feas = rt_feas(~idx, :);
 rt_train_labels = rt_labels(~idx, :);
 rt_test_feas = rt_feas(idx, :);
 rt_test_labels = rt_labels(idx, :);
 
+% all_feas = [cll_feas; acll_feas; rt_feas];
+% all_labels = [cll_labels; acll_labels; rt_labels];
+% rt_dset_path = fullfile('./data', 'GlobalGraph', 'rt_feas.mat');
+% save(rt_dset_path, 'all_feas', 'all_labels');
 
 train_feas = [cll_train_feas; acll_train_feas; rt_train_feas];
 train_labels = [cll_train_labels; acll_train_labels; rt_train_labels];
@@ -50,10 +54,11 @@ test_labels = [cll_test_labels; acll_test_labels; rt_test_labels];
 % build classifier
 % Bootstrap Aggregation (Bagging) 
 img_clf_model = fitcensemble(train_feas, train_labels, 'Method', 'Bag', 'Prior', [1.2, 1.4, 1.0]);
+% img_clf_model = fitcensemble(train_feas, train_labels, 'Method', 'Bag');
 % k nearest neighbors classification
-% img_clf_model = fitcknn(train_feas, train_labels,'NumNeighbors',5,'Standardize',1);
+% img_clf_model = fitcknn(train_feas, train_labels,'NumNeighbors',3,'Standardize',1);
 % Fit discriminant analysis classifier
-% img_clf_model = fitcdiscr(train_feas, train_labels);
+img_clf_model = fitcdiscr(train_feas, train_labels);
 
 % evaluate on the train
 pred_labels = predict(img_clf_model, train_feas);

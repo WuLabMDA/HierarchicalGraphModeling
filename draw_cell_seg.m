@@ -2,9 +2,9 @@ clearvars;
 figure('visible', 'off')
 
 % set folders
-img_root = fullfile('./data', 'LymphImgs');
-fea_root = fullfile('./data', 'ImgCellFeas');
-overlay_root = fullfile('./data', 'CellOverlay');
+img_root = fullfile('./data', 'All', 'LymphImgs');
+fea_root = fullfile('./data', 'All', 'ImgCellFeas');
+overlay_root = fullfile('./data', 'All', 'CellOverlay');
 subtypes = {'CLL', 'aCLL', 'RT'};
 
 for ss = 1:length(subtypes)

@@ -1,6 +1,6 @@
 clearvars;
 
-img_edge_fea_path = fullfile('./data', 'GlobalGraph', 'edge_connection_fea.mat');
+img_edge_fea_path = fullfile('./data', 'All', 'GlobalGraph', 'edge_connection_fea.mat');
 load(img_edge_fea_path, 'population_img_feas');
 
 subtypes = {'CLL', 'aCLL', 'RT'};
@@ -22,6 +22,6 @@ for ss = 1:length(subtypes)
     title(subtypes{ss});
 end
 suptitle('Edge Connection Ratio Boxplot');
-fig_save_path = fullfile('./data', 'Demos', 'EdgeFeas', 'edge_connection_ratios.png');
+fig_save_path = fullfile('./data', 'All', 'Demos', 'EdgeFeas', 'edge_connection_ratios.png');
 imwrite(getframe(gcf).cdata, fig_save_path);
 close all;
