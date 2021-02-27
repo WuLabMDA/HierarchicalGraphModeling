@@ -21,8 +21,10 @@ for ss = 1:length(subtypes)
         c2_list(ii) = feas(ii).graph_feas(5);
     end
     
-    boxplot([ss_list, sl_list, ll_list, c1_list, c2_list], ...,
-        'Notch', 'on', 'Labels',{'SS', 'SL', 'LL', 'C1', 'C2'});
+%     boxplot([ss_list, sl_list, ll_list, c1_list, c2_list], ...,
+%         'Notch', 'on', 'Labels',{'SS', 'SL', 'LL', 'C1', 'C2'});
+    boxplot([ss_list, sl_list, ll_list], ...,
+        'Notch', 'on', 'Labels',{'SS', 'SL', 'LL'});
     ylim([0.0 1.0]);
     title(subtypes{ss});
 end
