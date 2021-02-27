@@ -105,21 +105,21 @@ for ss = 1:length(subtypes)
         save(cur_graph_info_path, 'edges', 'nodes');
         
         
-        I_empty = zeros(1000, 1000);
-        imshow(I_empty);
-        hold on;
-        for ee=1:length(edges)
-            pa = edges(ee, 1);
-            pb = edges(ee, 2);
-            edge_sum = nodes(pa) + nodes(pb);
-            plot([cluster_centers(pa,1), cluster_centers(pb,1)], [cluster_centers(pa,2), cluster_centers(pb,2)], ...
-                'Color', cmap(edge_sum-1,:), 'LineWidth',3); 
-        end
-        hold off;
-        [~, basename, ~] = fileparts(img_list(ii).name);
-        cur_supercell_edge_path = fullfile('./data', 'All', 'GlobalGraph', diag, strcat(basename, '.png'));
-        imwrite(getframe(gca).cdata, cur_supercell_edge_path);
-        close all;
+%         I_empty = zeros(1000, 1000);
+%         imshow(I_empty);
+%         hold on;
+%         for ee=1:length(edges)
+%             pa = edges(ee, 1);
+%             pb = edges(ee, 2);
+%             edge_sum = nodes(pa) + nodes(pb);
+%             plot([cluster_centers(pa,1), cluster_centers(pb,1)], [cluster_centers(pa,2), cluster_centers(pb,2)], ...
+%                 'Color', cmap(edge_sum-1,:), 'LineWidth',3); 
+%         end
+%         hold off;
+%         [~, basename, ~] = fileparts(img_list(ii).name);
+%         cur_supercell_edge_path = fullfile('./data', 'All', 'GlobalGraph', diag, strcat(basename, '.png'));
+%         imwrite(getframe(gca).cdata, cur_supercell_edge_path);
+%         close all;
     end
 end
 
