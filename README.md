@@ -31,13 +31,13 @@ Cellular Spatial Pattern Mining via Unsupervised Clustering and Graph Modeling
 
 ## Step 4: Global Graph Construction & Diagnosis
 1. extract_global_graph_info.m
-- Build delaunay graph for each image based on all supercells' center 
-coordinates, and then extract edge and node information
-2. extract_graph_fea.m
-- Check the delaunay edge connection types, calculate the ratio between 
-1-1, 1-2, and 2-2.
+- Build the Delaunay graph for each image based on all supercells' center 
+coordinates, and then extract edge and node information. Build the Voronoi 
+graph and extract features.
+2. extract_graph_feas.m
+- Combine the features from supercell Delaunay and Voronoi graphs.
 3. graph_fea_boxplot.m
-- Draw the boxplot for edge connection features ratio of CLL/aCLL/RT.
+- Draw the boxplot for edge features ratios of CLL/aCLL/RT.
 4. img_graph_cls.m
-- Perform classification based on edge connection features.
+- Perform classification based on the collected features.
 
