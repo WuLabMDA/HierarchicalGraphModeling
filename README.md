@@ -29,7 +29,7 @@ Cellular Spatial Pattern Mining via Unsupervised Clustering and Graph Modeling
 5. draw_labeled_supercell.m
 - Label each supercell and overlay on the image
 
-## Step 4: Global Graph Construction
+## Step 4: Global Graph Construction & Diagnosis
 1. extract_global_graph_info.m
 - Build delaunay graph for each image based on all supercells' center 
 coordinates, and then extract edge and node information
@@ -38,13 +38,6 @@ coordinates, and then extract edge and node information
 1-1, 1-2, and 2-2.
 3. graph_fea_boxplot.m
 - Draw the boxplot for edge connection features ratio of CLL/aCLL/RT.
-
-## Step 5: Perform Graph Classification
-1. img_graph_cls.m
+4. img_graph_cls.m
 - Perform classification based on edge connection features.
-2. gen_graph_cls_data.m
-- Based on the extracted edge and node information, generate the dataset with
-format compatible to benchmark graph classification dataset like 
-PROTEINS/ENZYMES/MUTAG used at https://github.com/cszhangzhen/HGP-SL. 
-- Try https://github.com/cszhangzhen/HGP-SL and https://github.com/BorgwardtLab/WWL
 
