@@ -101,28 +101,29 @@ for ss = 1:length(subtypes)
         end
         edges = unique(edges, 'rows');
         nodes = graph_nodes(:, 3);
+        voronoi_feas = compute_voronoi_feas(graph_nodes(:, 1), graph_nodes(:, 2));
         cur_graph_info_path = fullfile('./data', 'GlobalGraph', diag, img_list(ii).name);
-        save(cur_graph_info_path, 'edges', 'nodes');
-        
-        
-        I_empty = zeros(1000, 1000);
-        imshow(I_empty);
-        hold on;
-        % plot all nodes 
-        % scatter(graph_nodes(:, 1), graph_nodes(:, 2), 300, 'MarkerFaceColor',[0 .7 .7], 'filled');
-        scatter(graph_nodes(:, 1), graph_nodes(:, 2), 300, 'MarkerFaceColor',[0 .7 .7]);
-        for ee=1:length(edges)
-            pa = edges(ee, 1);
-            pb = edges(ee, 2);
-            edge_sum = nodes(pa) + nodes(pb);
-            plot([cluster_centers(pa,1), cluster_centers(pb,1)], [cluster_centers(pa,2), cluster_centers(pb,2)], ...
-                'Color', cmap(edge_sum-1,:), 'LineWidth',3); 
-        end
-        hold off;
-        [~, basename, ~] = fileparts(img_list(ii).name);
-        cur_supercell_edge_path = fullfile('./data', 'GlobalGraph', diag, strcat(basename, '.png'));
-        imwrite(getframe(gca).cdata, cur_supercell_edge_path);
-        close all;
+        save(cur_graph_info_path, 'edges', 'nodes', 'voronoi_feas');
+       
+%         I_empty = ones(1000, 1000);
+%         imshow(I_empty);
+%         hold on;
+%         % plot all nodes 
+%         % scatter(graph_nodes(:, 1), graph_nodes(:, 2), 300, 'MarkerFaceColor',[0 .7 .7], 'filled');
+%         scatter(graph_nodes(:, 1), graph_nodes(:, 2), 300, 'MarkerFaceColor',[0 .7 .7]);
+%         for ee=1:length(edges)
+%             pa = edges(ee, 1);
+%             pb = edges(ee, 2);
+%             edge_sum = nodes(pa) + nodes(pb);
+%             plot([cluster_centers(pa,1), cluster_centers(pb,1)], [cluster_centers(pa,2), cluster_centers(pb,2)], ...
+%                 'Color', cmap(edge_sum-1,:), 'LineWidth',3); 
+%         end
+%         hold off;
+%         set(gca, 'color', 'none');
+%         [~, basename, ~] = fileparts(img_list(ii).name);
+%         cur_supercell_edge_path = fullfile('./data', 'GlobalGraph', diag, strcat(basename, '.png'));
+%         imwrite(getframe(gca).cdata, cur_supercell_edge_path);
+%         close all;
     end
 end
 
