@@ -1,15 +1,15 @@
 clearvars;
-fea_root = fullfile('./data', 'All', 'GlobalGraph');
-img_edge_fea_path = fullfile('./data', 'All', 'GlobalGraph', 'edge_connection_fea.mat');
+fea_root = fullfile('./data', 'GlobalGraph');
+img_edge_fea_path = fullfile('./data', 'GlobalGraph', 'graph_fea.mat');
 
 subtypes = {'CLL', 'aCLL', 'RT'};
-population_img_feas = struct('diagnosis', 'img_feas');
+population_img_feas = struct('diagnosis', 'feas');
 for ss = 1:length(subtypes)
     diag = subtypes{ss};
     disp(['Graph Edge Features for ', diag]);
     cur_diag_dir = fullfile(fea_root, diag);
     img_list = dir(fullfile(cur_diag_dir, '*.mat'));
-    img_edge_feas = struct('name', 'edge_feas');
+    img_graph_feas = struct('name', 'graph_feas');
     for ii = 1:length(img_list)
         disp([num2str(ii), '/', num2str(length(img_list))]);
         cur_graph_info_path = fullfile(cur_diag_dir, img_list(ii).name);
@@ -33,12 +33,15 @@ for ss = 1:length(subtypes)
         ss_ratio = ss_num * 1.0 / edge_num;
         sl_ratio = sl_num * 1.0 / edge_num;
         ll_ratio = ll_num * 1.0 / edge_num;
+        c1_ratio = sum(nodes == 1) / length(nodes);
+        c2_ratio = sum(nodes == 2) /length(nodes);
         [~, basename, ~] = fileparts(img_list(ii).name);
-        img_edge_feas(ii).name = basename;
-        img_edge_feas(ii).edge_feas = [ss_ratio, sl_ratio, ll_ratio];
+        img_graph_feas(ii).name = basename;
+        img_graph_feas(ii).graph_feas = [ss_ratio, sl_ratio, ll_ratio, c1_ratio, c2_ratio];
+        
     end
     population_img_feas(ss).diagnosis = diag;
-    population_img_feas(ss).img_feas = img_edge_feas;
+    population_img_feas(ss).feas = img_graph_feas;
 end
 save(img_edge_fea_path, 'population_img_feas');
 

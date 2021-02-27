@@ -1,12 +1,12 @@
 clearvars;
-fea_root = fullfile('./data', 'All', 'ImgCellFeas');
+fea_root = fullfile('./data', 'ImgCellFeas');
 
 feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','IntegratedIntensity',...
     'MinorAxisLength','MeanOutsideBoundaryIntensity','NormalizedBoundarySaliency',...
     'NormalizedOutsideBoundaryIntensity','MeanInsideBoundaryIntensity'};
         
 subtypes = {'CLL', 'aCLL', 'RT'};
-cmap=[1 0 0; 0 1 0; 0 0 1];
+cmap=[0 1 0; 1 0 0; 0 0 1];
 for ss = 1:length(subtypes)
     diag = subtypes{ss};
     disp(['Global Graph for ', diag]);
@@ -23,7 +23,7 @@ for ss = 1:length(subtypes)
         img_cell_feas = img_cell_feas';
 
         % load cell classifier paramters
-        cell_clf_para_path = fullfile('./data', 'All', 'Models', 'cell_clf_para.mat');
+        cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
         load(cell_clf_para_path);
 
         % normalize data
@@ -43,7 +43,7 @@ for ss = 1:length(subtypes)
         [cluster_centers,idx,cluster2data]= ROC(data_pts, 0.9, 10);
 
         % Save the supercell classifier 
-        supercell_clf_para_path = fullfile('./data', 'All', 'Models', 'supercell_clf_para.mat');
+        supercell_clf_para_path = fullfile('./data', 'Models', 'supercell_clf_para.mat');
         load(supercell_clf_para_path);
         % calualte the cluster centers
         cell_coors = data_pts(:,1:2)';
@@ -101,25 +101,28 @@ for ss = 1:length(subtypes)
         end
         edges = unique(edges, 'rows');
         nodes = graph_nodes(:, 3);
-        cur_graph_info_path = fullfile('./data', 'All', 'GlobalGraph', diag, img_list(ii).name);
+        cur_graph_info_path = fullfile('./data', 'GlobalGraph', diag, img_list(ii).name);
         save(cur_graph_info_path, 'edges', 'nodes');
         
         
-%         I_empty = zeros(1000, 1000);
-%         imshow(I_empty);
-%         hold on;
-%         for ee=1:length(edges)
-%             pa = edges(ee, 1);
-%             pb = edges(ee, 2);
-%             edge_sum = nodes(pa) + nodes(pb);
-%             plot([cluster_centers(pa,1), cluster_centers(pb,1)], [cluster_centers(pa,2), cluster_centers(pb,2)], ...
-%                 'Color', cmap(edge_sum-1,:), 'LineWidth',3); 
-%         end
-%         hold off;
-%         [~, basename, ~] = fileparts(img_list(ii).name);
-%         cur_supercell_edge_path = fullfile('./data', 'All', 'GlobalGraph', diag, strcat(basename, '.png'));
-%         imwrite(getframe(gca).cdata, cur_supercell_edge_path);
-%         close all;
+        I_empty = zeros(1000, 1000);
+        imshow(I_empty);
+        hold on;
+        % plot all nodes 
+        % scatter(graph_nodes(:, 1), graph_nodes(:, 2), 300, 'MarkerFaceColor',[0 .7 .7], 'filled');
+        scatter(graph_nodes(:, 1), graph_nodes(:, 2), 300, 'MarkerFaceColor',[0 .7 .7]);
+        for ee=1:length(edges)
+            pa = edges(ee, 1);
+            pb = edges(ee, 2);
+            edge_sum = nodes(pa) + nodes(pb);
+            plot([cluster_centers(pa,1), cluster_centers(pb,1)], [cluster_centers(pa,2), cluster_centers(pb,2)], ...
+                'Color', cmap(edge_sum-1,:), 'LineWidth',3); 
+        end
+        hold off;
+        [~, basename, ~] = fileparts(img_list(ii).name);
+        cur_supercell_edge_path = fullfile('./data', 'GlobalGraph', diag, strcat(basename, '.png'));
+        imwrite(getframe(gca).cdata, cur_supercell_edge_path);
+        close all;
     end
 end
 

@@ -1,13 +1,13 @@
 clearvars;
 
-% test_type = 'CLL';
-% test_name = '137';
+test_type = 'CLL';
+test_name = '137';
 % test_type = 'aCLL';
 % test_name = '205';
-test_type = 'RT';
-test_name = '14';
+% test_type = 'RT';
+% test_name = '14';
 
-fea_path = fullfile('./data', 'All', 'ImgCellFeas', test_type, strcat(test_name, '.mat'));
+fea_path = fullfile('./data', 'ImgCellFeas', test_type, strcat(test_name, '.mat'));
 load(fea_path);
 feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','IntegratedIntensity',...
     'MinorAxisLength','MeanOutsideBoundaryIntensity','NormalizedBoundarySaliency',...
@@ -19,7 +19,7 @@ end
 img_cell_feas = img_cell_feas';
 
 % load cell classifier paramters
-cell_clf_para_path = fullfile('./data', 'All', 'Models', 'cell_clf_para.mat');
+cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
 load(cell_clf_para_path);
 
 % normalize data
@@ -39,7 +39,7 @@ data_pts(:,3) = labels;
 [cluster_centers,idx,cluster2data]= ROC(data_pts, 0.9, 10);
 
 % Save the supercell classifier 
-supercell_clf_para_path = fullfile('./data', 'All', 'Models', 'supercell_clf_para.mat');
+supercell_clf_para_path = fullfile('./data', 'Models', 'supercell_clf_para.mat');
 load(supercell_clf_para_path);
 
 
@@ -53,7 +53,7 @@ end
 
 imshow(I);
 hold on;
-cmap=[0 1 0; 1 0 0; 0 0 1;1 1 0; 1 0 1; 0 1 1; 1 1 1];
+cmap=[0 1 0; 1 0 0; 0 0 1;1 1 0; 1 0 1; 0 1 1; 1 1 1] / 1.25;
 % extract supercell features 
 for cc=1:length(cluster2data)
     % mean of indivisual cel
@@ -97,6 +97,6 @@ for cc=1:length(cluster2data)
 end
 hold off;
 
-fig_save_path = fullfile('./data', 'All', 'Demos', 'LabeledSuperCells', strcat(test_type, test_name, '.png'));
+fig_save_path = fullfile('./data', 'Demos', 'LabeledSuperCells', strcat(test_type, test_name, '.png'));
 imwrite(getframe(gca).cdata, fig_save_path);
 close all;

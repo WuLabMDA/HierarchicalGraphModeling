@@ -1,6 +1,6 @@
 clearvars;
 rng(123)
-fea_root = './data/All/ImgCellFeas';
+fea_root = './data/ImgCellFeas';
 chose_num = 3000;
 
 % Fusing features from CLL/aCLL/RT
@@ -61,6 +61,6 @@ select_labels = labels(select_idx, :);
 [norm_data, cell_fea_mu, cell_fea_sd] = zscore(select_combine_data); 
 % Build classification model
 cell_clf_model = fitcensemble(norm_data, select_labels, 'Method', 'Bag');
-% Save the cell 
-cell_clf_para_path = fullfile('./data', 'All', 'Models', 'cell_clf_para.mat');
+% Save the cell classifier 
+cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
 save(cell_clf_para_path, 'cell_clf_model', 'cell_fea_mu', 'cell_fea_sd');

@@ -1,7 +1,7 @@
 clearvars;
 rng(123);
 
-supercell_fea_path = fullfile('./data', 'All', 'ImgCellFeas', 'population_supercell.mat');
+supercell_fea_path = fullfile('./data', 'ImgCellFeas', 'population_supercell.mat');
 load(supercell_fea_path);
 % Collect all CLL supercells
 CLL_supercell_feas = population_supercell_feas(1).img_feas;
@@ -31,13 +31,13 @@ rt_feas = cell2mat(rt_feas);
 all_supercell_feas = cat(1, cll_feas, acll_feas, rt_feas);
 
 % perform t-sne
-t_feas = tsne(all_supercell_feas, 'Perplexity', 100, 'Standardize', true);
+t_feas = tsne(all_supercell_feas, 'Perplexity', 1000, 'Standardize', true);
 % scatter(t_feas(:, 1), t_feas(:, 2), 'filled');
 % title('2D t-SNE Embedding');
 
 % perform spectral clustering
 [ids, ~, ~] = spectralcluster(t_feas, 2);
 gscatter(t_feas(:, 1), t_feas(:, 2), ids, 'rgb', '', [15, 15]);
-fig_save_path = fullfile('./data', 'All', 'Demos', 'Cluster', 'supercell_cluster.png');
+fig_save_path = fullfile('./data', 'Demos', 'Cluster', 'supercell_cluster.png');
 imwrite(getframe(gca).cdata, fig_save_path);
 close all;

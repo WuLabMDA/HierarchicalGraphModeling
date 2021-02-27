@@ -3,8 +3,8 @@ clearvars;
 % add nuclei segmentation package
 addpath(genpath('./nuclei_seg'));
 
-img_root = fullfile('./data', 'All', 'LymphImgs');
-fea_root = fullfile('./data', 'All', 'ImgCellFeas');
+img_root = fullfile('./data', 'LymphImgs');
+fea_root = fullfile('./data', 'ImgCellFeas');
 subtypes = {'CLL', 'aCLL', 'RT'};
 for ss = 1:length(subtypes)
     diag = subtypes{ss};
