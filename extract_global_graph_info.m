@@ -15,10 +15,6 @@ for ss = 1:length(subtypes)
     for ii = 1:length(img_list)
         disp([num2str(ii), '/', num2str(length(img_list))]);
         [~, basename, ~] = fileparts(img_list(ii).name);
-        if ~strcmp(basename, '205')
-            continue
-        end
-         
         cur_fea_path = fullfile(cur_diag_dir, img_list(ii).name);
         load(cur_fea_path);
         img_cell_feas = zeros(length(feature_names), length(properties));
@@ -43,7 +39,7 @@ for ss = 1:length(subtypes)
         data_pts(:,1) = centroids(1:2:end);
         data_pts(:,2) = centroids(2:2:end);
         data_pts(:,3) = labels;
-
+        
         % graph construction
         [cluster_centers,idx,cluster2data]= ROC(data_pts, 0.9, 10);
 
@@ -88,8 +84,8 @@ for ss = 1:length(subtypes)
             cluster_label = predict(supercell_clf_model, norm_fea);
             graph_nodes(node_ind, 1:2) = cluster_center;
             graph_nodes(node_ind, 3) = cluster_label;
+
             node_ind = node_ind + 1;
-            % draw all the cells
         end
         graph_nodes = graph_nodes(1:node_ind-1, :);
         
@@ -106,23 +102,23 @@ for ss = 1:length(subtypes)
 %         close all;
 
         
-%         DT = delaunay(graph_nodes(:, 1), graph_nodes(:, 2));
-%         edges = zeros(size(DT, 1) * 3, 2);
-%         for dd=0:size(DT, 1)-1
-%             node_list = sort(DT(dd+1, :));
-%             edges(dd*3 + 1, 1) = node_list(1);
-%             edges(dd*3 + 1, 2) = node_list(2);
-%             edges(dd*3 + 2, 1) = node_list(1);
-%             edges(dd*3 + 2, 2) = node_list(3);
-%             edges(dd*3 + 3, 1) = node_list(2);
-%             edges(dd*3 + 3, 2) = node_list(3);    
-%         end
-%         edges = unique(edges, 'rows');
-%         nodes = graph_nodes(:, 3);
-%         voronoi_feas = compute_voronoi_feas(graph_nodes(:, 1), graph_nodes(:, 2));
-%         cur_graph_info_path = fullfile('./data', 'GlobalGraph', diag, img_list(ii).name);
-%         save(cur_graph_info_path, 'edges', 'nodes', 'voronoi_feas');
-       
+        DT = delaunay(graph_nodes(:, 1), graph_nodes(:, 2));
+        edges = zeros(size(DT, 1) * 3, 2);
+        for dd=0:size(DT, 1)-1
+            node_list = sort(DT(dd+1, :));
+            edges(dd*3 + 1, 1) = node_list(1);
+            edges(dd*3 + 1, 2) = node_list(2);
+            edges(dd*3 + 2, 1) = node_list(1);
+            edges(dd*3 + 2, 2) = node_list(3);
+            edges(dd*3 + 3, 1) = node_list(2);
+            edges(dd*3 + 3, 2) = node_list(3);    
+        end
+        edges = unique(edges, 'rows');
+        nodes = graph_nodes(:, 3);
+        voronoi_feas = compute_voronoi_feas(graph_nodes(:, 1), graph_nodes(:, 2));
+        cur_graph_info_path = fullfile('./data', 'GlobalGraph', diag, img_list(ii).name);
+        save(cur_graph_info_path, 'edges', 'nodes', 'voronoi_feas');
+        
 %         I_empty = ones(1000, 1000);
 %         imshow(I_empty);
 %         hold on;
