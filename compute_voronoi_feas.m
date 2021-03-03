@@ -1,5 +1,19 @@
 function [vfeature] = compute_voronoi_feas(x, y)
 
+% Voronoi Features
+% 1: Area Standard Deviation
+% 2: Area Average
+% 3: Area Minimum / Maximum
+% 4: Area Disorder
+% 5: Perimeter Standard Deviation
+% 6: Perimeter Average
+% 7: Perimeter Minimum / Maximum
+% 8: Perimeter Disorder
+% 9: Chord Standard Deviation
+% 10: Chord Average
+% 11: Chord Minimum / Maximum
+% 12: Chord Disorder
+
 % Calculate the Voronoi diagram.
 [VX,VY] = voronoi(x,y);
 [V, C] = voronoin([x(:),y(:)]);
