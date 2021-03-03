@@ -51,7 +51,6 @@ for rr=1:rand_times
     specificities(rr) = cur_specificity;
     cur_sensitivity = (tpr1(mid_ind1) + tpr2(mid_ind2) + tpr3(mid_ind3)) / 3.0;
     sensitivities(rr) = cur_sensitivity;
-
 end
 disp(['The 100 randomized cross valiation         mean auc: ', num2str(mean(auc_rates))]);
 disp(['The 100 randomized cross valiation          std auc: ', num2str(std(auc_rates))]);
