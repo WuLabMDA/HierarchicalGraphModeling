@@ -37,10 +37,10 @@ for ss = 1:length(subtypes)
         c2_ratio = sum(nodes == 2) /length(nodes);
         [~, basename, ~] = fileparts(img_list(ii).name);
         img_graph_feas(ii).name = basename;
-        % Delaunay features
-        img_graph_feas(ii).graph_feas = [ss_ratio, sl_ratio, ll_ratio];
-        % Voronoi features
-        img_graph_feas(ii).graph_feas = voronoi_feas;
+%         % Delaunay features
+%         img_graph_feas(ii).graph_feas = [ss_ratio, sl_ratio, ll_ratio];
+%         % Voronoi features
+%         img_graph_feas(ii).graph_feas = voronoi_feas;
         % Delaunay & Voronoi features
         img_graph_feas(ii).graph_feas = [ss_ratio, sl_ratio, ll_ratio, voronoi_feas];
     end
