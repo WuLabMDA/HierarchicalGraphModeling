@@ -40,4 +40,6 @@ graph and extract features.
 - Draw the boxplot for edge features ratios of CLL/aCLL/RT.
 4. img_graph_cls.m
 - Perform classification based on the collected features.
+5. cmp_graph_cls.m
+- Compare with three other graph-based methods.
 
