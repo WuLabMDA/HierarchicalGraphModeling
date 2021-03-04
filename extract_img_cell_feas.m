@@ -11,6 +11,9 @@ for ss = 1:length(subtypes)
     disp(['Extract ', diag]);
     cur_img_dir = fullfile(img_root, diag);
     cur_fea_dir = fullfile(fea_root, diag);
+    if ~exist(cur_fea_dir, 'dir')
+        mkdir(cur_fea_dir)
+    end
     img_list = dir(fullfile(cur_img_dir, '*.png'));
     for ii = 1:length(img_list)
         disp([num2str(ii), '/', num2str(length(img_list))]);
