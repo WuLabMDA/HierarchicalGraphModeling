@@ -1,11 +1,11 @@
 clearvars;
 
-test_type = 'CLL';
-test_name = '137';
+% test_type = 'CLL';
+% test_name = '137';
 % test_type = 'aCLL';
 % test_name = '205';
-% test_type = 'RT';
-% test_name = '14';
+test_type = 'RT';
+test_name = '14';
 
 fea_path = fullfile('./data', 'ImgCellFeas', test_type, strcat(test_name, '.mat'));
 load(fea_path);
@@ -97,6 +97,10 @@ for cc=1:length(cluster2data)
 end
 hold off;
 
-fig_save_path = fullfile('./data', 'Demos', 'LabeledSuperCells', strcat(test_type, test_name, '.png'));
+supercell_demo_dir = fullfile('./data', 'LabeledSuperCells');
+if ~exist(supercell_demo_dir, 'dir')
+    mkdir(supercell_demo_dir)
+end  
+fig_save_path = fullfile(supercell_demo_dir, strcat(test_type, test_name, '.png'));
 imwrite(getframe(gca).cdata, fig_save_path);
 close all;
