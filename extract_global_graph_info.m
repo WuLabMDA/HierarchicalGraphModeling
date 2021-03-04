@@ -6,15 +6,23 @@ feature_names = {'Area','Perimeter','MajorAxisLength','EquivDiameter','Integrate
     'NormalizedOutsideBoundaryIntensity','MeanInsideBoundaryIntensity'};
         
 subtypes = {'CLL', 'aCLL', 'RT'};
-cmap=[0 1 0; 1 0 0; 0 0 1];
+cmap=[1 0 0; 0 1 0; 0 0 1];
 for ss = 1:length(subtypes)
     diag = subtypes{ss};
     disp(['Global Graph for ', diag]);
     cur_diag_dir = fullfile(fea_root, diag);
+    cur_globalgraph_dir = fullfile('./data', 'GlobalGraph', diag);
+    if ~exist(cur_globalgraph_dir, 'dir')
+        mkdir(cur_globalgraph_dir)
+    end      
+    
     img_list = dir(fullfile(cur_diag_dir, '*.mat'));
     for ii = 1:length(img_list)
         disp([num2str(ii), '/', num2str(length(img_list))]);
         [~, basename, ~] = fileparts(img_list(ii).name);
+%         if ~strcmp(basename, '205')
+%             continue
+%         end
         cur_fea_path = fullfile(cur_diag_dir, img_list(ii).name);
         load(cur_fea_path);
         img_cell_feas = zeros(length(feature_names), length(properties));
@@ -40,6 +48,22 @@ for ss = 1:length(subtypes)
         data_pts(:,2) = centroids(2:2:end);
         data_pts(:,3) = labels;
         
+%         % Draw cell types on empty images
+%         I_empty = zeros(1000, 1000);
+%         imshow(I_empty);
+%         hold on;
+%         for cc=1:length(nuclei)
+%             if data_pts(cc, 3) == 1
+%                 plot(nuclei{cc}(:,2), nuclei{cc}(:,1), 'r-', 'LineWidth', 1);
+%             elseif data_pts(cc, 3) == 2
+%                 plot(nuclei{cc}(:,2), nuclei{cc}(:,1), 'g-', 'LineWidth', 1);
+%             else
+%                 disp('Unknow label');
+%             end
+%         end
+%         hold off;
+%         cur_cell_seg_path = fullfile('./data', 'Demos', 'CellSeg', diag, strcat(basename, '_cell.png'));
+%         imwrite(getframe(gca).cdata, cur_cell_seg_path);
         % graph construction
         [cluster_centers,idx,cluster2data]= ROC(data_pts, 0.9, 10);
 
@@ -53,6 +77,7 @@ for ss = 1:length(subtypes)
             cluster_coors(:,i) = mean(cell_coors(:, idx==i), 2);
         end
 
+        % collect graph nodes
         graph_nodes = zeros(length(cluster2data), 3);
         node_ind = 1;
         % extract supercell features 
@@ -89,19 +114,7 @@ for ss = 1:length(subtypes)
         end
         graph_nodes = graph_nodes(1:node_ind-1, :);
         
-%         img = ones(1000, 1000, 3);
-%         [voroimage, sub_image] = voronoizone(graph_nodes(:, 1), graph_nodes(:, 2), img);
-        
-%         voronoi(graph_nodes(:, 1), graph_nodes(:, 2));
-%         axis equal;
-%         xlim([0 1000]);
-%         ylim([0 1000]);
-%         set(gca,'xtick',[], 'ytick', []);
-%         img_supercell_voronoi_path = fullfile('./data', 'GlobalGraph', diag, strcat(basename, '_voronoi.png'));
-%         imwrite(getframe(gca).cdata, img_supercell_voronoi_path);
-%         close all;
-
-        
+        % build the delaunay graph
         DT = delaunay(graph_nodes(:, 1), graph_nodes(:, 2));
         edges = zeros(size(DT, 1) * 3, 2);
         for dd=0:size(DT, 1)-1
@@ -116,28 +129,49 @@ for ss = 1:length(subtypes)
         edges = unique(edges, 'rows');
         nodes = graph_nodes(:, 3);
         voronoi_feas = compute_voronoi_feas(graph_nodes(:, 1), graph_nodes(:, 2));
-        cur_graph_info_path = fullfile('./data', 'GlobalGraph', diag, img_list(ii).name);
+        
+        % save global graph features
+        cur_graph_info_path = fullfile(cur_globalgraph_dir, img_list(ii).name);
         save(cur_graph_info_path, 'edges', 'nodes', 'voronoi_feas');
         
-%         I_empty = ones(1000, 1000);
-%         imshow(I_empty);
-%         hold on;
-%         % plot all nodes 
-%         % scatter(graph_nodes(:, 1), graph_nodes(:, 2), 300, 'MarkerFaceColor',[0 .7 .7], 'filled');
-%         scatter(graph_nodes(:, 1), graph_nodes(:, 2), 300, 'MarkerFaceColor',[0 .7 .7]);
-%         for ee=1:length(edges)
-%             pa = edges(ee, 1);
-%             pb = edges(ee, 2);
-%             edge_sum = nodes(pa) + nodes(pb);
-%             plot([cluster_centers(pa,1), cluster_centers(pb,1)], [cluster_centers(pa,2), cluster_centers(pb,2)], ...
-%                 'Color', cmap(edge_sum-1,:), 'LineWidth',3); 
-%         end
-%         hold off;
-%         set(gca, 'color', 'none');
-%         cur_supercell_edge_path = fullfile('./data', 'GlobalGraph', diag, strcat(basename, '.png'));
-%         imwrite(getframe(gca).cdata, cur_supercell_edge_path);
-%         close all;
+        % plot built delaunay graph
+        I_empty = ones(1000, 1000);
+        imshow(I_empty);
+        hold on;
+        % plot all nodes 
+        for gg=1:length(graph_nodes)
+            if graph_nodes(gg, 3) == 1
+                scatter(graph_nodes(gg, 1), graph_nodes(gg, 2), 300, 'MarkerFaceColor', 'red');
+            elseif graph_nodes(gg, 3) == 2
+                scatter(graph_nodes(gg, 1), graph_nodes(gg, 2), 300, 'MarkerFaceColor', 'green');
+            else
+                disp('Unknow node');
+            end     
+        end
+        % plot all edges
+        for ee=1:length(edges)
+            pa = edges(ee, 1);
+            pb = edges(ee, 2);
+            edge_sum = nodes(pa) + nodes(pb);
+            plot([cluster_centers(pa,1), cluster_centers(pb,1)], [cluster_centers(pa,2), cluster_centers(pb,2)], ...
+                'Color', cmap(edge_sum-1,:), 'LineWidth',3); 
+        end
+        hold off;
+        set(gca, 'color', 'none');
+        cur_supercell_edge_path = fullfile(cur_globalgraph_dir, strcat(basename, '_delaunay.png'));
+        imwrite(getframe(gca).cdata, cur_supercell_edge_path);
+        close all;
 
+        % draw voronoi graph
+        voronoi(graph_nodes(:, 1), graph_nodes(:, 2));
+        axis equal;
+        xlim([0 1000]);
+        ylim([0 1000]);
+        set(gca,'xtick',[], 'ytick', []);
+        img_supercell_voronoi_path = fullfile(cur_globalgraph_dir, strcat(basename, '_voronoi.png'));
+        imwrite(getframe(gca).cdata, img_supercell_voronoi_path);
+        close all;
+        
         
     end
 end
