@@ -51,6 +51,12 @@ lg = legend(unique(char(str_labels),'rows'),'location','best','FontSize',20);
 set(lg,'Box','off');
 xlim([-3, 10]);
 ylim([-10, -2]);
-fig_save_path = fullfile('./data', 'Demos', 'Cluster', 'supercell_cluster.png');
+
+% save the supercell clustering 
+cell_cluster_dir = fullfile('./data', 'Cluster');
+if ~exist(cell_cluster_dir, 'dir')
+    mkdir(cell_cluster_dir)
+end  
+fig_save_path = fullfile(cell_cluster_dir, 'supercell_cluster.png');
 imwrite(getframe(gca).cdata, fig_save_path);
 close all;

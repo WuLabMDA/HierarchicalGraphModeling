@@ -45,5 +45,9 @@ t_feas = tsne(all_supercell_feas, 'Perplexity', 1000, 'Standardize', true);
 % Build classification model
 supercell_clf_model = fitcensemble(norm_data, labels, 'Method', 'Bag');
 % Save the supercell classifier 
-supercell_clf_para_path = fullfile('./data', 'Models', 'supercell_clf_para.mat');
+supercell_model_dir = fullfile('./data', 'Models');
+if ~exist(supercell_model_dir, 'dir')
+    mkdir(supercell_model_dir)
+end 
+supercell_clf_para_path = fullfile(supercell_model_dir, 'supercell_clf_para.mat');
 save(supercell_clf_para_path, 'supercell_clf_model', 'supercell_fea_mu', 'supercell_fea_sd');
