@@ -37,7 +37,20 @@ t_feas = tsne(all_supercell_feas, 'Perplexity', 1000, 'Standardize', true);
 
 % perform spectral clustering
 [ids, ~, ~] = spectralcluster(t_feas, 2);
-gscatter(t_feas(:, 1), t_feas(:, 2), ids, 'rgb', '', [15, 15]);
+str_labels = cell(length(ids), 1);
+for ii=1:length(ids)
+    if ids(ii) == 1
+        str_labels{ii} = 'Supercell C1';
+    elseif ids(ii) == 2
+        str_labels{ii} = 'Supercell C2';
+    end
+end
+
+gscatter(t_feas(:, 1), t_feas(:, 2), str_labels, 'rg', '', [15, 15], 'off');
+lg = legend(unique(char(str_labels),'rows'),'location','best','FontSize',20);
+set(lg,'Box','off');
+xlim([-3, 10]);
+ylim([-10, -2]);
 fig_save_path = fullfile('./data', 'Demos', 'Cluster', 'supercell_cluster.png');
 imwrite(getframe(gca).cdata, fig_save_path);
 close all;
