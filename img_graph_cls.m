@@ -28,6 +28,9 @@ acc_rates = zeros(rand_times, 1);
 auc_rates = zeros(rand_times, 1);
 specificities = zeros(rand_times, 1);
 sensitivities = zeros(rand_times, 1);
+auc1_rates = zeros(rand_times, 1);
+auc2_rates = zeros(rand_times, 1);
+auc3_rates = zeros(rand_times, 1);
 for rr=1:rand_times
     data_partition = cvpartition(labels,'KFold', 5); % Create a random partition for stratified 5-fold cross-validation.
     svm_cv_model = fitcecoc(all_feas, labels, 'CVPartition', data_partition, ...
@@ -51,16 +54,24 @@ for rr=1:rand_times
     specificities(rr) = cur_specificity;
     cur_sensitivity = (tpr1(mid_ind1) + tpr2(mid_ind2) + tpr3(mid_ind3)) / 3.0;
     sensitivities(rr) = cur_sensitivity;
+    auc1_rates(rr) = auc1;
+    auc2_rates(rr) = auc2;
+    auc3_rates(rr) = auc3;
 end
-disp(['The 100 randomized cross valiation         mean auc: ', num2str(mean(auc_rates))]);
-disp(['The 100 randomized cross valiation          std auc: ', num2str(std(auc_rates))]);
+% disp(['The 100 randomized cross valiation         mean auc: ', num2str(mean(auc_rates))]);
+% disp(['The 100 randomized cross valiation          std auc: ', num2str(std(auc_rates))]);
+% disp(['The 100 randomized cross valiation mean specificity: ', num2str(mean(specificities))]);
+% disp(['The 100 randomized cross valiation  std specificity: ', num2str(std(specificities))]);
+% disp(['The 100 randomized cross valiation mean sensitivity: ', num2str(mean(sensitivities))]);
+% disp(['The 100 randomized cross valiation  std sensitivity: ', num2str(std(sensitivities))]);
 disp(['The 100 randomized cross valiation         mean acc: ', num2str(mean(acc_rates))]);
 disp(['The 100 randomized cross valiation          std acc: ', num2str(std(acc_rates))]);
-disp(['The 100 randomized cross valiation mean specificity: ', num2str(mean(specificities))]);
-disp(['The 100 randomized cross valiation  std specificity: ', num2str(std(specificities))]);
-disp(['The 100 randomized cross valiation mean sensitivity: ', num2str(mean(sensitivities))]);
-disp(['The 100 randomized cross valiation  std sensitivity: ', num2str(std(sensitivities))]);
-
+disp(['The 100 randomized cross valiation        mean auc1: ', num2str(mean(auc1_rates))]);
+disp(['The 100 randomized cross valiation         std auc1: ', num2str(std(auc1_rates))]);
+disp(['The 100 randomized cross valiation        mean auc2: ', num2str(mean(auc2_rates))]);
+disp(['The 100 randomized cross valiation         std auc2: ', num2str(std(auc2_rates))]);
+disp(['The 100 randomized cross valiation        mean auc3: ', num2str(mean(auc3_rates))]);
+disp(['The 100 randomized cross valiation         std auc3: ', num2str(std(auc3_rates))]);
 
 %% Cell Voronoi
 %% Cell Flock-Centroid
