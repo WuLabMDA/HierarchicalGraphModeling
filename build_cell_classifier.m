@@ -62,5 +62,9 @@ select_labels = labels(select_idx, :);
 % Build classification model
 cell_clf_model = fitcensemble(norm_data, select_labels, 'Method', 'Bag');
 % Save the cell classifier 
-cell_clf_para_path = fullfile('./data', 'Models', 'cell_clf_para.mat');
+cell_model_dir = fullfile('./data', 'Models');
+if ~exist(cell_model_dir, 'dir')
+    mkdir(cell_model_dir)
+end 
+cell_clf_para_path = fullfile(cell_model_dir, 'cell_clf_para.mat');
 save(cell_clf_para_path, 'cell_clf_model', 'cell_fea_mu', 'cell_fea_sd');
