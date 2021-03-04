@@ -2,10 +2,10 @@ clearvars;
 
 % test_type = 'CLL';
 % test_name = '137';
-test_type = 'aCLL';
-test_name = '205';
-% test_type = 'RT';
-% test_name = '14';
+% test_type = 'aCLL';
+% test_name = '205';
+test_type = 'RT';
+test_name = '14';
 
 fea_path = fullfile('./data', 'ImgCellFeas', test_type, strcat(test_name, '.mat'));
 load(fea_path);
@@ -27,20 +27,6 @@ norm_fea = bsxfun(@minus, img_cell_feas, cell_fea_mu);
 norm_fea = bsxfun(@rdivide, norm_fea, cell_fea_sd);
 % label prediction
 labels = predict(cell_clf_model, norm_fea);
-
-% imshow(I);
-% hold on;
-% for k = 1:length(nuclei)
-%     if labels(k) == 1
-%         plot(nuclei{k}(:,2), nuclei{k}(:,1), 'g-', 'LineWidth', 1);
-%     else
-%         plot(nuclei{k}(:,2), nuclei{k}(:,1), 'r-', 'LineWidth', 1);
-%     end
-% end
-% hold off;  
-% fig_save_path = fullfile('./data', 'Demos', 'CellClassify', strcat(test_name, '_cell_subtype.png'));
-% imwrite(getframe(gca).cdata, fig_save_path);
-% close all;
 
 % create cell features for graph construction
 data_pts = zeros(length(properties), 3);
@@ -74,6 +60,10 @@ for k = 1 : num_cells
 end
 hold off;
 
-fig_save_path = fullfile('./data', 'Demos', 'SuperCells', strcat(test_type, test_name, '.png'));
+supercell_demo_dir = fullfile('./data', 'SuperCells');
+if ~exist(supercell_demo_dir, 'dir')
+    mkdir(supercell_demo_dir)
+end  
+fig_save_path = fullfile(supercell_demo_dir, strcat(test_type, test_name, '.png'));
 imwrite(getframe(gca).cdata, fig_save_path);
 close all;
