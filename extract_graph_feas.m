@@ -1,6 +1,6 @@
 clearvars;
 fea_root = fullfile('./data', 'GlobalGraph');
-img_edge_fea_path = fullfile('./data', 'GlobalGraph', 'graph_fea.mat');
+graph_fea_path = fullfile('./data', 'GlobalGraph', 'graph_fea.mat');
 
 subtypes = {'CLL', 'aCLL', 'RT'};
 population_img_feas = struct('diagnosis', 'feas');
@@ -47,5 +47,5 @@ for ss = 1:length(subtypes)
     population_img_feas(ss).diagnosis = diag;
     population_img_feas(ss).feas = img_graph_feas;
 end
-save(img_edge_fea_path, 'population_img_feas');
+save(graph_fea_path, 'population_img_feas');
 
