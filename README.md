@@ -18,8 +18,8 @@ Cellular Spatial Pattern Mining via Unsupervised Clustering and Graph Modeling
 - Construct cell classifer based on pseudo cell types
 
 ## Step 3: SuperCell Community Detection
-1. gen_supercells.m
-- Generate supercells based on local graph construction
+1. draw_supercells.m
+- Generate supercells and draw on the orignal image
 2. pool_supercell_feas.m
 - Pooling all images' supercell's features
 3. cluster_supercells.m
@@ -36,10 +36,8 @@ coordinates, and then extract edge and node information. Build the Voronoi
 graph and extract features.
 2. extract_graph_feas.m
 - Combine the features from supercell Delaunay and Voronoi graphs.
-3. graph_fea_boxplot.m
-- Draw the boxplot for edge features ratios of CLL/aCLL/RT.
-4. img_graph_cls.m
+3. img_graph_cls.m
 - Perform classification based on the collected features.
-5. cmp_graph_cls.m
+4. cmp_graph_cls.m
 - Compare with three other graph-based methods.
 
