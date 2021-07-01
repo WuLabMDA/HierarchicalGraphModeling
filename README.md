@@ -41,3 +41,14 @@ graph and extract features.
 4. cmp_graph_cls.m
 - Compare with three other graph-based methods.
 
+## Citation
+Please consider `cite` the paper if you use the code or data for your research.
+```
+@article{chen2021hierarchical,
+  title={Hierarchical Phenotyping and Graph Modeling of Spatial Architecture in Lymphoid Neoplasms},
+  author={Chen, Pingjun and Aminu, Muhammad and El Hussein, Siba and Khoury, Joseph and Wu Jia},
+  journal={International Conference on Medical Image Computing and Computer-Assisted Intervention},,
+  year={2021},
+  organization={Springer}
+}
+```
