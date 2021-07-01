@@ -42,7 +42,7 @@ graph and extract features.
 - Compare with three other graph-based methods.
 
 ## Citation
-Please consider `cite` the paper if you use the code or data for your research.
+Please consider `cite` the paper if you use the code for your research.
 ```
 @article{chen2021hierarchical,
   title={Hierarchical Phenotyping and Graph Modeling of Spatial Architecture in Lymphoid Neoplasms},
